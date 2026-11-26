@@ -1,0 +1,43 @@
+name: SMC Bot
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: smc-bot
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+
+      - name: Quét tín hiệu SMC
+        run: python smc_bot.py
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SYMBOLS: "binance:CLUSDT,binance:BZUSDT,binance:BTCUSDT,binance:ETHUSDT,mexc:SPX500_USDT"
+          TF: "15m"
+          HTF: "4h"
+          SWING: "5"
+          RR: "2"
+          NEED_SWEEP: "1"
+          NEED_FVG: "0"
+          USE_HTF: "1"
+          SEND_TEST: "1"
+
+      - name: Lưu trạng thái (chống gửi trùng)
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add state.json
+          git diff --cached --quiet || (git commit -m "update state" && git pull --rebase && git push)
