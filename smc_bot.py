@@ -17,7 +17,6 @@ import requests
 SYMBOLS    = [s.strip() for s in os.getenv("SYMBOLS", "binance:CLUSDT,binance:BTCUSDT,mexc:SPX500_USDT").split(",") if s.strip()]
 TF         = os.getenv("TF", "15m")                 # khung vào lệnh
 HTF        = os.getenv("HTF", "4h")                 # khung lọc xu hướng
-SEND_TEST: "1"
 SWING      = int(os.getenv("SWING", "5"))           # độ dài swing (pivot)
 NEED_SWEEP = os.getenv("NEED_SWEEP", "1") == "1"    # bắt buộc quét thanh khoản
 NEED_FVG   = os.getenv("NEED_FVG", "0") == "1"      # bắt buộc có FVG
