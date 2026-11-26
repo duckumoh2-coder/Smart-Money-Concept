@@ -33,8 +33,6 @@ jobs:
           NEED_SWEEP: "1"
           NEED_FVG: "0"
           USE_HTF: "1"
-          SEND_TEST: "1"
-
       - name: Lưu trạng thái (chống gửi trùng)
         run: |
           git config user.name "github-actions"
